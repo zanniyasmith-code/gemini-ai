@@ -1,47 +1,59 @@
-export enum AppMode {
-  NORMAL = 'Normal',
-  BUSINESS = 'Business',
-  INVESTMENT = 'Investment',
+export enum ProductType {
+  AFFILIATE_PHYSICAL = 'affiliate_physical',
+  DIGITAL_DOWNLOAD = 'digital_download',
+  SERVICE = 'service'
 }
 
-export enum BusinessSubMode {
-  PRICING = 'Pricing',
-  DISCOUNT_TAX = 'Discount & Tax',
-  EMI = 'EMI',
-}
+export type UserRole = 'buyer' | 'seller';
 
-export enum InvestmentSubMode {
-  LUMPSUM = 'Lumpsum',
-  SIP_FV = 'SIP (Future Value)',
-  SIP_GOAL = 'SIP (Goal)',
-}
-
-export interface HistoryItem {
+export interface UserProfile {
   id: string;
-  expression: string;
-  result: string;
-  timestamp: number;
+  email: string;
+  role: UserRole;
+  created_at: string;
 }
 
-export type ThemeName = 'normal' | 'business' | 'investment' | 'professional' | 'premiumGold' | 'neonTech';
-
-export interface ThemeColors {
-  background: string;
-  surface: string;
-  primary: string;
-  secondary: string;
-  accent: string;
-  text: string;
-  muted: string;
-  border: string;
-  display: string; // Background for calculator display
-  danger: string;
+export interface Shop {
+  id: string;
+  profile_id: string; // Owner
+  shop_name: string;
+  slug: string;
+  logo_url?: string;
+  banner_url?: string;
+  wallet_balance: number;
+  verified: boolean;
 }
 
-export interface AppTheme {
-  name: ThemeName;
-  label: string;
+export interface Product {
+  id: string;
+  shop_id: string;
+  title: string;
   description: string;
-  colors: ThemeColors;
-  isDark: boolean;
+  price: number;
+  
+  // The Hybrid Logic
+  product_type: ProductType;
+  affiliate_link?: string; // If present, it's affiliate. If null, it's direct.
+  
+  images: string[];
+  video_url?: string;
+  category: string;
+  
+  // Stats for the marketplace view
+  rating: number;
+  reviewCount: number;
+}
+
+export interface AnalyticsMetrics {
+  product_id: string;
+  views: number;
+  clicks: number;
+  sales_count: number;
+  revenue: number; // For direct sales
+}
+
+export interface FilterState {
+  query: string;
+  type: ProductType | 'all';
+  category: string | 'all';
 }
